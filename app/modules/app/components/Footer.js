@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 const Footer = () => (
   <div className="footer">
-    Footer
+    <div className="container text-center text-muted">
+      &copy; Corevalue 2016
+    </div>
   </div>
 )
 

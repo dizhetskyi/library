@@ -2,6 +2,7 @@ import App from './App';
 import Home from './components/Home';
 
 import signin from './modules/signin/signin.routes';
+import books from './modules/books/books.routes';
 
 export default {
   path: '/',
@@ -10,6 +11,7 @@ export default {
     component: Home
   },
   childRoutes: [
-    signin
+    signin,
+    books
   ]
 }

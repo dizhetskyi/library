@@ -9,6 +9,8 @@ class App extends Component {
       <div className="app">
         <Header />
         {this.props.children}
+        <br/>
+        <br/>
         <Footer />
       </div>
     );

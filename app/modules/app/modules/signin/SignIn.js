@@ -1,39 +1,57 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import { autobind } from 'core-decorators';
 
-import {signInForm} from 'stores/SignInStore';
+import Form from 'stores/Form';
 import InputField from 'shared/form/InputField';
 
+@observer 
+class SignIn extends Component {
 
-@observer class SignIn extends Component {
-
-  onSubmit = (e) => {
-    e.preventDefault();
-    console.log(toJS(signInForm))
+  componentWillMount() {
+    this.form = new Form([
+      {name: 'login', value: '', label: 'Login'},
+      {name: 'password', value: '', label: 'Password'}
+    ]);
   }
-
-  onChange = (key, value) => {
-    this.updateProperty(key, value)
-  }
-
-  updateProperty (key, value) {
-    signInForm[key] = value
-  }
-
+  
   render(){
     return (
-      <div className="sign-in">
-        <form onSubmit={this.onSubmit}>
-          <InputField name="login" value={signInForm.login} onChange={this.onChange} />
-          <br/>
-          <InputField name="password" type="password" value={signInForm.password} onChange={this.onChange} />
-          <br/>
-          <button type="submit">Sign In</button>
-        </form>
+      <div className="container">
+        <div className="sign-in">
+          <div className="row">
+          
+            <form className="col-sm-4 col-sm-push-4" onSubmit={this.onSubmit} autocomplete="off">
+
+              <h2>Sign in</h2>
+              <br/>
+              <InputField 
+                input={this.form.fields.login} 
+                onChange={this.form.setField} 
+              />
+              <InputField 
+                input={this.form.fields.password} 
+                onChange={this.form.setField} 
+                type="password"
+              />
+              <button className="btn btn-primary" type="submit" disabled={this.form.pristine || !this.form.valid}>Sign In</button>
+              
+            </form>
+
+          </div>
+
+        </div>
+
       </div>
     );
   }
+  
+  @autobind
+  onSubmit(e) {
+    e.preventDefault();
+    console.log(this.form.serialize())
+  }
+
 }
 
 export default SignIn;
