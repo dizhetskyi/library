@@ -23,6 +23,7 @@ const Header = ({router}) => (
         </ul>
         <ul className="nav navbar-nav navbar-right">          
           <li className={classnames({active: router.isActive('/signin')})}><Link to="/signin">Sign In</Link></li>
+          <li className={classnames({active: router.isActive('/signup')})}><Link to="/signup">Sign Up</Link></li>
         </ul>
       </div>
     </div>

@@ -1,48 +1,41 @@
-import { observable, computed, reaction } from 'mobx';
+import { observable, computed, reaction, toJS, asMap } from 'mobx';
 import { debounce, autobind } from 'core-decorators';
 
 class FormField {
 
   @observable value;  
-  @observable error = {};
+  @observable error = asMap();
   @observable pristine = true;
 
-  constructor({name, value, label}){
-    this.name = name;
-    this.value = value;
-    this.label = label;
+  validators = [];
+
+  constructor(options){
+    Object.assign(this, options)
 
     reaction(() => this.value, this.validate, true)
   }
 
   @autobind
-  @debounce
   validate(value) {
-    var err = {};
 
     if (value.trim() === ''){
-      err['required'] = 'Field is required';
+      this.error.set('required', 'Field is required');
+    } else {
+      this.error.delete('required');
     }
-
-    this.error = err;
   }
   
-  @computed get valid(){
-    return !Object.keys(this.error).length;
+  @computed 
+  get valid(){
+    return !this.error.size;
   }
 
   errorMessage(key){
-    const errors = Object.keys(this.error);
-
-    if (!errors.length){
-      return null;
-    } else {
-      if (typeof key === 'undefined'){
-        return this.error[errors[0]]
-      } else {
-        return this.error[key] || null;
-      }
+    if (typeof key === 'undefined'){
+      return this.error.values()[0];
     }
+    
+    return this.error.get(key);
   }
 
 }

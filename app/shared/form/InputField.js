@@ -4,7 +4,8 @@ import { observer } from 'mobx-react';
 import { autobind } from 'core-decorators';
 import classnames from 'classnames';
 
-@observer class InputField extends Component {
+@observer 
+class InputField extends Component {
 
   render() {
     const { input } = this.props;
@@ -20,7 +21,7 @@ import classnames from 'classnames';
           value={input.value}
           type={this.props.type}
         />
-        {!input.pristine && !input.valid && <div>{input.errorMessage()}</div>}
+        {!input.pristine && !input.valid && <div className="help-block">{input.errorMessage()}</div>}
       </div>
     );
   }

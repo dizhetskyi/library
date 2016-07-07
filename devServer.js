@@ -10,6 +10,10 @@ const compiler = webpack(config);
 
 app.use(express.static(__dirname + '/public'));
 
+app.use('/uploads', express.static(
+  path.resolve(__dirname + '/uploads/')
+))
+
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath

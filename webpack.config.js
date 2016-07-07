@@ -20,15 +20,16 @@ var config = {
         exclude: /node_modules/
       },
       {
-        test: /\.s?css$/,
-        loader: 'style|css|sass'        
+        test: /\.scss$/,
+        loader: 'style!css!sass'
       }
     ]
   },
   resolve: {
     alias: {
       'shared': path.resolve(__dirname + '/app/shared'),
-      'stores': path.resolve(__dirname + '/app/stores')
+      'stores': path.resolve(__dirname + '/app/stores'),
+      'config': path.resolve(__dirname + '/app/config'),
     }
   },
   plugins: [
