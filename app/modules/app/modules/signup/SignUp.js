@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { observable, reaction } from 'mobx';
 import { observer } from 'mobx-react';
 import { autobind } from 'core-decorators';
+import { withRouter } from 'react-router';
+import axios from 'axios';
 
 import { authBase } from 'config/main';
 import Form from 'stores/Form';
 import InputField from 'shared/form/InputField';
+import AuthStore from 'stores/AuthStore';
 
 @observer 
-class SignIn extends Component {
+class SignUp extends Component {
   
   form = new Form([
     {name: 'login', value: '', label: 'Login'},
@@ -36,12 +39,13 @@ class SignIn extends Component {
   
   render(){
     const { form } = this;
+    
     return (
       <div className="container">
         <div className="sign-in">
           <div className="row">
           
-            <form className="col-sm-6 col-sm-push-3" onSubmit={this.onSubmit} autocomplete="off">
+            <form className="col-sm-6 col-sm-push-3 col-lg-4 col-lg-push-4" onSubmit={this.onSubmit} autocomplete="off">
 
               <h2>Sign Up</h2>
               <br/>
@@ -71,22 +75,30 @@ class SignIn extends Component {
   @autobind
   onSubmit(e) {
     e.preventDefault();
-    var data = this.form.serialize();
 
-    fetch(`${authBase}/signup`, {
+    const { router } = this.props;
+    
+    let url = `${authBase}/signup`;
+    let data = JSON.stringify(this.form.serialize());
+    let options = {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(jwt => {
-        localStorage.setItem('jwt', JSON.stringify(jwt))
+      data
+    }
+
+    axios(url, options)
+      .then(({data}) => {
+        if (data.success){
+          router.push('/signin');
+        } else {
+          console.log(data.message);
+        }
       });
   }
 
 }
 
-export default SignIn;
+export default withRouter(SignUp);

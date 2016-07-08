@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 
-import { apiBase } from 'config/main';
 import BooksStore from 'stores/BooksStore';
 import List from './components/List';
 
 @observer
 class Books extends Component {
 
-  componentDidMount() {
-    this.fetchBooks();
+  componentWillMount() {
+    BooksStore.fetchBooks();
   }
 
   render(){
@@ -31,15 +30,6 @@ class Books extends Component {
 
       </div>
     );
-  }
-
-  fetchBooks(){
-    fetch(`${apiBase}/books`)
-      .then(res => res.json())
-      .then(data => {
-        BooksStore.fetching = false;
-        BooksStore.books = data;
-      });
   }
   
 }

@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
+import AuthStore from 'stores/AuthStore';
 
+@observer
 class App extends Component {
-  componentDidMount() {
-  }
   render(){
+
+    if (AuthStore.fetching){
+      return <div className="app">fetching</div>
+    }
+
     return (
       <div className="app">
         <Header />
+        {AuthStore.isLoggedIn && AuthStore.user.role}
         {this.props.children}
         <br/>
         <br/>

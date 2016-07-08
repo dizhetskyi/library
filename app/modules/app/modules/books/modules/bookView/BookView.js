@@ -1,17 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { observer } from 'mobx-react';
 
-import { apiBase } from 'config/main';
 import Store from './store';
 
 @observer
 class BookView extends Component {
 
-  store = new Store();
-
   componentDidMount() {
     const { id } = this.props.routeParams;
-    this.fetchBook(id);
+    Store.fetchBook(id);
   }
 
   render(){
@@ -24,7 +21,7 @@ class BookView extends Component {
 
   renderBookView(){
 
-    const { fetching, error, book } = this.store;
+    const { fetching, error, book } = Store;
 
     if (fetching) 
       return <div className="fetching">Fetching</div>
@@ -52,18 +49,6 @@ class BookView extends Component {
         <div className="book--current-reader">{book.current_reader}</div>
       </div>
     );
-  }
-
-  fetchBook(id){
-    fetch(`${apiBase}/books/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        this.store.book = data;
-        this.store.fetching = false;
-      }, err => {
-        this.store.error = err;
-        this.store.fetching = false;
-      })
   }
 
 }

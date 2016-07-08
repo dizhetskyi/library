@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link, withRouter } from 'react-router';
 import classnames from 'classnames';
+import { observer } from 'mobx-react';
 
-const Header = ({router}) => (
+import AuthStore from 'stores/AuthStore';
+
+const Header = observer(({router}) => (
 
   <nav className="navbar navbar-default" role="navigation">
     <div className="container">
@@ -17,17 +20,48 @@ const Header = ({router}) => (
       </div>
   
       <div className="collapse navbar-collapse">
-        <ul className="nav navbar-nav">          
-          <li className={classnames({active: router.isActive('/', true)})}><Link to="/">Home</Link></li>          
-          <li className={classnames({active: router.isActive('/books')})}><Link to="/books">Browse</Link></li>
+        <ul className="nav navbar-nav">
+          <ActiveNavItem to="/" label="Home" onlyIndex={true} />
+          <ActiveNavItem to="/books" label="Browse" />
         </ul>
-        <ul className="nav navbar-nav navbar-right">          
-          <li className={classnames({active: router.isActive('/signin')})}><Link to="/signin">Sign In</Link></li>
-          <li className={classnames({active: router.isActive('/signup')})}><Link to="/signup">Sign Up</Link></li>
-        </ul>
+        <AuthBox router={router} />
       </div>
     </div>
   </nav>
-)
+))
+
+const AuthBox = observer(({router}) => (
+  <ul className="nav navbar-nav navbar-right">
+    {!AuthStore.isLoggedIn && 
+      <ActiveNavItem to="/signin" label="Sign In" />}
+
+    {!AuthStore.isLoggedIn && 
+      <ActiveNavItem to="/signup" label="Sign Up" />}
+
+    {AuthStore.isLoggedIn && 
+      <li>
+        <a 
+          href="" 
+          onClick={(e) => {
+            e.preventDefault();
+            AuthStore.logout();
+          }}
+        >
+          logout ({AuthStore.user.login})
+        </a>
+      </li>
+    }
+  </ul>
+))
+
+const ActiveNavItem = withRouter(({to, label, router, onlyIndex = false}) => (
+  <li className={classnames({active: router.isActive(to, onlyIndex)})}>
+    <Link to={to}>{label}</Link>
+  </li>
+))
+
+ActiveNavItem.propTypes = {
+  to: PropTypes.string.isRequired
+}
 
 export default withRouter(Header);

@@ -10,4 +10,10 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(cors());
   app.use(override());
+  app.use((req, res, next) => {
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    req.token = token;
+    next();
+  })
 };

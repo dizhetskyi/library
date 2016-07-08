@@ -1,7 +1,7 @@
 var express = require('express');
 
 var api = require('./api/api');
-var auth = require('./api/auth');
+var auth = require('./api/auth/authRoutes');
 var config = require('./config/config');
 
 var app = express();
