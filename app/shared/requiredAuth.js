@@ -1,41 +1,18 @@
-import React from 'react';
-
 import AuthStore from 'stores/AuthStore';
-import { browserHistory } from 'react-router';
+import toastr from 'toastr';
 
-function requiresAuth(Component, options) {  
-  class AuthenticatedComponent extends React.Component {
-    
-    componentDidMount() {
-      this._checkAndRedirect();
-    }
+const requiredAuth = ({redirectTo = '/signin', role} = {}) => (nextState, replace) => {
+  if (!AuthStore.isLoggedIn || (role && !AuthStore.checkRole(role))){
 
-    componentDidUpdate() {
-      this._checkAndRedirect();
-    }
+    toastr.error('No', 'Yes');
 
-    _checkAndRedirect() {
-      const { role = 'user', redirectTo = '/signin'} = options
-
-      if (!AuthStore.isLoggedIn){
-        browserHistory.push(redirectTo);
-      } else {
-        if (AuthStore.user.role !== role){
-          browserHistory.push(redirectTo);
-        }
+    replace({
+      pathname: redirectTo,
+      state: {
+        nextPathname: nextState.location.pathname
       }
-    }
-
-    render() {
-      return (
-        <div className="authenticated">
-          { AuthStore.isLoggedIn ? <Component {...this.props} /> : null }
-        </div>
-      );
-    }
+    })
   }
-
-  return AuthenticatedComponent;
 }
 
-export default requiresAuth;
+export default requiredAuth;

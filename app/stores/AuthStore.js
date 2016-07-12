@@ -55,6 +55,12 @@ class AuthStore {
     localStorage.removeItem(this.storageKey);
   }
 
+  checkRole(role){
+    if (!this.isLoggedIn) return false;
+
+    return this.user.role === role;
+  }
+
   @action
   validateToken(){
 

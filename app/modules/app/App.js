@@ -16,7 +16,6 @@ class App extends Component {
     return (
       <div className="app">
         <Header />
-        {AuthStore.isLoggedIn && AuthStore.user.role}
         {this.props.children}
         <br/>
         <br/>

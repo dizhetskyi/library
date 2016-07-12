@@ -45,6 +45,7 @@ const AuthBox = observer(({router}) => (
           onClick={(e) => {
             e.preventDefault();
             AuthStore.logout();
+            router.push('/');
           }}
         >
           logout ({AuthStore.user.login})

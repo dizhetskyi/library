@@ -6,8 +6,9 @@ import requiredAuth from 'shared/requiredAuth';
 export default {
   path: '/books',
   indexRoute: {
-    component: requiredAuth(Books, {role: 'user'})
+    component: Books
   },
+  onEnter: requiredAuth(),
   childRoutes: [
     view
   ]

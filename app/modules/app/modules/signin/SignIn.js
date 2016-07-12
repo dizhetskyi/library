@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { autobind } from 'core-decorators';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 
 import { authBase } from 'config/main';
 import Form from 'stores/Form';
@@ -15,6 +16,10 @@ class SignIn extends Component {
     {name: 'login', value: '', label: 'Login'},
     {name: 'password', value: '', label: 'Password'}
   ]);
+
+  componentDidMount() {
+    const { router, location } = this.props;
+  }
 
   render(){
     return (
@@ -53,8 +58,8 @@ class SignIn extends Component {
   onSubmit(e) {
     e.preventDefault();
     
-    const { router } = this.props;
-    
+    const { router, location } = this.props;
+
     let url = `${authBase}/signin`;
     let data = JSON.stringify(this.form.serialize());
     let options = {
@@ -68,15 +73,24 @@ class SignIn extends Component {
 
     axios(url, options)
       .then(({data}) => {
+
         if (data.success){
+          
           AuthStore.login(data.token);
+
+          if (location.state && location.state.nextPathname){
+            router.replace(location.state.nextPathname)
+          } else {
+            router.replace('/')
+          }
+
         } else {
           console.log(data.message);
         }
-      });
 
+      });
   }
 
 }
 
-export default SignIn;
+export default withRouter(SignIn);

@@ -4,5 +4,6 @@ import requiredAuth from 'shared/requiredAuth';
 
 export default {
   path: '/books/:id',
-  component: requiredAuth(BookView, {role: 'admin'})
+  component: BookView,
+  onEnter: requiredAuth({role: 'admin'})
 }
