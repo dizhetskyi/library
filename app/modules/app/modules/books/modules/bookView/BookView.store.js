@@ -10,16 +10,11 @@ class BookViewStore {
   @observable error = false;
 
   @action
-  fetchBook(id){
-    axios(`${apiBase}/books/${id}`)
-      .then(({data}) => {
-        this.book = data;
-        this.fetching = false;
-      })
-      .catch(err => {
-        this.error = err;
-        this.fetching = false;
-      })
+  async fetchBook(id){
+    const { data } = await axios(`${apiBase}/books/${id}`).catch(err => this.error = true);
+
+    this.book = data;
+    this.fetching = false;
   }
 }
 

@@ -2,9 +2,12 @@ import AuthStore from 'stores/AuthStore';
 import toastr from 'toastr';
 
 const requiredAuth = ({redirectTo = '/signin', role} = {}) => (nextState, replace) => {
+
+  if (AuthStore.fetching) return;
+
   if (!AuthStore.isLoggedIn || (role && !AuthStore.checkRole(role))){
 
-    toastr.error('No', 'Yes');
+    toastr.error('You have no permissions to perform this action', 'Access denied');
 
     replace({
       pathname: redirectTo,
@@ -13,6 +16,7 @@ const requiredAuth = ({redirectTo = '/signin', role} = {}) => (nextState, replac
       }
     })
   }
+
 }
 
 export default requiredAuth;

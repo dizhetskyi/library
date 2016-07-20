@@ -52,7 +52,7 @@ module.exports.signin = (req, res, next) => {
     };
     var secret = req.app.get('secret');
     var options = {
-      expiresIn: 60 * 1
+      expiresIn: 60 * 60
     }
 
     var token = jwt.sign(payload, secret, options);

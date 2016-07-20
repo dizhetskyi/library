@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { observer } from 'mobx-react';
 
-import Store from './store';
+import Store from './BookView.store';
 
 @observer
 class BookView extends Component {

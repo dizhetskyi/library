@@ -1,6 +1,7 @@
 import 'toastr/toastr.scss';
 import './scss/main.scss';
 
+import 'babel-polyfill';
 import 'jquery';
 import toastr from 'toastr';
 import React from 'react';
@@ -9,6 +10,7 @@ import { Router, browserHistory } from 'react-router';
 import axios from 'axios';
   
 import routes from './modules/app/app.routes';
+import AuthStore from 'stores/AuthStore';
 
 toastr.options = Object.assign({}, toastr.options, {
   newestOnTop: true,

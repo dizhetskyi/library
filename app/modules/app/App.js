@@ -10,7 +10,11 @@ class App extends Component {
   render(){
 
     if (AuthStore.fetching){
-      return <div className="app">fetching</div>
+      return (
+        <div className="app text-center">
+          <i className="fa fa-spinner fa-spin"></i> <span>fetching</span>
+        </div>
+      );
     }
 
     return (
